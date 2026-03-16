@@ -43,7 +43,7 @@ export default function HeroSection() {
             </button>
 
             <button className="px-8 py-3 rounded-lg border border-blue-400 text-blue-300 font-semibold hover:bg-blue-500/10 transition">
-              Join the Club
+              Join the Club.
             </button>
 
           </div>
