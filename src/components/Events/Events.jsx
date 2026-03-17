@@ -90,7 +90,7 @@ function Events() {
             <h3>Hackathon</h3>
             <p>
               A competitive event where teams build real-world projects within
-              limited time.
+              limited time..
             </p>
             <button>Know More</button>
           </div>

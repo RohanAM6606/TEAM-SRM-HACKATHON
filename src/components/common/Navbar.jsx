@@ -16,11 +16,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { id: "about", label: "About", hash: "#about" },
-    { id: "domains", label: "Domains", hash: "#domains" },
-    { id: "events", label: "Events", hash: "#events" },
-    { id: "teams", label: "Teams", hash: "#teams" },
-    { id: "contact", label: "Contact Us", hash: "#contact" },
+    { id: "about", label: "About" },
+    { id: "domains", label: "Domains" },
+    { id: "events", label: "Events" },
+    { id: "teams", label: "Teams" },
+    { id: "contact", label: "Contact Us" },
   ];
 
   const handleNavClick = (item) => {
@@ -48,18 +48,18 @@ const Navbar = () => {
       <div
         className={`mx-4 md:mx-8 lg:mx-12 rounded-2xl transition-all duration-300 ${
           scrolled
-            ? "backdrop-blur-xl bg-black/40 shadow-2xl shadow-blue-500/20"
-            : "backdrop-blur-md bg-black/20 shadow-xl"
+            ? "backdrop-blur-xl bg-blue-950/80 shadow-2xl shadow-blue-500/20 border border-blue-500/20"
+            : "backdrop-blur-lg bg-blue-950/60 shadow-xl border border-blue-500/10"
         }`}
       >
-        {/* Blue Gradient Border */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-cyan-500/20 to-blue-400/20 opacity-50 blur-sm" />
+        {/* Glow Border */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-cyan-500/20 to-blue-400/20 opacity-40 blur-md"></div>
 
-        <div className="relative flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10 py-3 md:py-4">
+        <div className="relative flex items-center justify-between px-6 md:px-10 py-4">
 
           {/* Logo */}
           <div
-            className="flex items-center gap-2 md:gap-3 group cursor-pointer"
+            className="flex items-center gap-3 group cursor-pointer"
             onClick={() =>
               window.scrollTo({
                 top: 0,
@@ -68,75 +68,64 @@ const Navbar = () => {
             }
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/40 rounded-full blur-md group-hover:bg-blue-400/60 transition-all duration-300" />
+              <div className="absolute inset-0 bg-blue-500/40 rounded-full blur-lg group-hover:bg-blue-400/60 transition"></div>
 
               <img
                 src={logoImage}
                 alt="Logo"
-                className="relative w-8 h-8 md:w-10 md:h-10 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                className="relative w-9 h-9 drop-shadow-[0_0_12px_rgba(59,130,246,0.8)]"
               />
             </div>
 
-            <h1 className="text-white font-extrabold tracking-wider text-sm md:text-base lg:text-lg">
+            <h1 className="text-white font-extrabold tracking-wider text-base md:text-lg">
               TEAM SRM{" "}
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent font-black">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent">
                 HACKATHON
               </span>
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-3">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-3">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item)}
-                className={`
-                  relative px-4 lg:px-6 py-2 rounded-xl font-bold text-sm lg:text-base
-                  transition-all duration-300 group overflow-hidden
-                  ${
-                    activeSection === item.id
-                      ? "text-white"
-                      : "text-gray-300 hover:text-white"
-                  }
-                `}
+                className={`relative px-5 py-2 rounded-xl font-semibold transition-all duration-300 group ${
+                  activeSection === item.id
+                    ? "text-white"
+                    : "text-gray-300 hover:text-white"
+                }`}
               >
-                {/* Active Background */}
                 <span
-                  className={`
-                    absolute inset-0 rounded-xl transition-all duration-300
-                    ${
-                      activeSection === item.id
-                        ? "bg-gradient-to-r from-blue-500 to-cyan-400 opacity-100 shadow-lg shadow-blue-500/40"
-                        : "bg-white/5 opacity-0 group-hover:opacity-100"
-                    }
-                  `}
-                />
-
-                {/* Hover Shine */}
-                <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                    activeSection === item.id
+                      ? "bg-gradient-to-r from-blue-500 to-cyan-400 shadow-lg shadow-blue-500/40"
+                      : "bg-white/5 opacity-0 group-hover:opacity-100"
+                  }`}
+                ></span>
 
                 <span className="relative z-10">{item.label}</span>
               </button>
             ))}
           </div>
 
-          {/* Hamburger */}
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden relative w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 backdrop-blur-sm flex items-center justify-center transition-all duration-300"
+            className="md:hidden w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <div className="relative w-5 h-3.5 flex flex-col justify-between">
+            <div className="w-5 h-4 flex flex-col justify-between">
               <span
-                className={`w-full h-0.5 bg-white rounded-full transition-all duration-300 ${
+                className={`h-0.5 bg-white rounded transition ${
                   menuOpen ? "rotate-45 translate-y-1.5" : ""
                 }`}
-              />
+              ></span>
               <span
-                className={`w-full h-0.5 bg-white rounded-full transition-all duration-300 ${
+                className={`h-0.5 bg-white rounded transition ${
                   menuOpen ? "-rotate-45 -translate-y-1.5" : ""
                 }`}
-              />
+              ></span>
             </div>
           </button>
         </div>
@@ -147,26 +136,16 @@ const Navbar = () => {
             menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="px-4 pb-4 space-y-2 pt-4">
-            {navItems.map((item, index) => (
+          <div className="px-6 pb-6 space-y-2">
+            {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item)}
-                className={`
-                  block w-full text-left px-4 py-3 rounded-xl font-bold
-                  transition-all duration-300 transform
-                  ${
-                    activeSection === item.id
-                      ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/30"
-                      : "text-gray-300 hover:text-white hover:bg-white/10"
-                  }
-                `}
-                style={{
-                  animationDelay: `${index * 50}ms`,
-                  animation: menuOpen
-                    ? "slideIn 0.3s ease-out forwards"
-                    : "none",
-                }}
+                className={`block w-full text-left px-4 py-3 rounded-xl font-semibold transition ${
+                  activeSection === item.id
+                    ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white"
+                    : "text-gray-300 hover:bg-white/10"
+                }`}
               >
                 {item.label}
               </button>
@@ -174,19 +153,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </nav>
   );
 };
