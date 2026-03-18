@@ -1,7 +1,6 @@
 import React from "react";
 import GridBackground from "../ui/GridBackground";
 
-// ✅ IMPORT IMAGES (important)
 import ideaImg from "./idea.jpg";
 import semiImg from "./semi.jpg";
 import hackImg from "./hack.jpg";
