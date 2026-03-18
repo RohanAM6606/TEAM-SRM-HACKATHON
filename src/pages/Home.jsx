@@ -4,6 +4,7 @@ import About from "../components/about/About";
 import Domains from "../components/Domains/Domains";
 import Events from "../components/Events/Events";
 import Teams from "../components/Teams/Teams";
+import Contact from "../components/contact/Contact";
 
 const Home = () => {
   return (
@@ -27,6 +28,9 @@ const Home = () => {
 
       <div data-section="teams">
         <Teams />
+      </div>
+      <div data-section="contact">
+        <Contact />
       </div>
     </div>
   );
