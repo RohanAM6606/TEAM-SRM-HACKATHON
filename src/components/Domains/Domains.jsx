@@ -2,14 +2,14 @@ import React from "react";
 import GridBackground from "../ui/GridBackground";
 
 const domains = [
-  { title: "Tech", icon: "💻", desc: "Build powerful applications and systems." },
-  { title: "Non-Tech", icon: "📊", desc: "Manage strategy and operations." },
-  { title: "Sponsorship", icon: "🤝", desc: "Handle partnerships and collaborations." },
-  { title: "Logistics", icon: "📦", desc: "Ensure smooth execution of events." },
-  { title: "Creatives", icon: "🎨", desc: "Design visuals and branding." },
-  { title: "Content", icon: "✍️", desc: "Create engaging content." },
-  { title: "Publicity", icon: "📢", desc: "Promote and manage outreach." },
-  { title: "Finance", icon: "💰", desc: "Manage budgets and finances." },
+  { title: "Tech",  desc: "Build powerful applications and systems." },
+  { title: "Non-Tech",  desc: "Manage strategy and operations." },
+  { title: "Sponsorship",  desc: "Handle partnerships and collaborations." },
+  { title: "Logistics",  desc: "Ensure smooth execution of events." },
+  { title: "Creatives", desc: "Design visuals and branding." },
+  { title: "Content",  desc: "Create engaging content." },
+  { title: "Publicity",  desc: "Promote and manage outreach." },
+  { title: "Finance",  desc: "Manage budgets and finances." },
 ];
 
 function Domains() {
@@ -19,16 +19,15 @@ function Domains() {
       {/* GRID BACKGROUND */}
       <GridBackground />
 
-      {/* 🔥 DARK OVERLAY (makes it deep black) */}
+     
       <div className="absolute inset-0 bg-black/70"></div>
 
-      {/* ✨ SUBTLE BLUE GLOW */}
+   
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(0,150,255,0.08),transparent_40%)]"></div>
 
-      {/* 🔥 GLOW LINE */}
+     
       <div className="absolute left-0 right-0 top-1/2 h-[2px] bg-cyan-400/20 blur-sm"></div>
 
-      {/* ⚡ ANIMATED LIGHT BEAM */}
       <div className="absolute left-0 right-0 top-1/2 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-beam"></div>
 
       {/* HEADING */}
