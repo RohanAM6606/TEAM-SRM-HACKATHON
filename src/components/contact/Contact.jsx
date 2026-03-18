@@ -6,28 +6,26 @@ function Footer() {
   return (
     <footer className="relative bg-gradient-to-b from-[#020617] via-[#020b1f] to-black text-white px-6 py-16 overflow-hidden">
 
-      {/* 🔵 TOP GLOW LINE */}
+  
       <div className="absolute top-0 left-0 w-full h-[2px] 
         bg-gradient-to-r from-transparent via-cyan-400 to-transparent 
         opacity-80 blur-[1px]" />
 
-      {/* 🌌 GRID LINE EFFECT */}
+      
       <div className="absolute top-0 left-0 w-full h-16 
         bg-[linear-gradient(to_right,rgba(0,255,255,0.15)_1px,transparent_1px)] 
         bg-[size:40px_1px] opacity-40" />
 
-      {/* ⚡ ANIMATED LIGHT BEAM */}
       <div className="absolute top-0 left-0 w-full h-[2px] overflow-hidden">
         <div className="w-40 h-full bg-cyan-400 blur-sm animate-topBeam"></div>
       </div>
 
-      {/* 🌌 BACKGROUND */}
       <GridBackground />
       <div className="absolute inset-0 bg-black/70"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
 
-        {/* LEFT */}
+      
         <div>
           <h2 className="text-2xl font-bold text-cyan-400 mb-4">
             TEAM SRM HACKATHON
@@ -50,7 +48,7 @@ function Footer() {
           </div>
         </div>
 
-        {/* CENTER */}
+      
         <div>
           <h3 className="text-lg font-semibold text-cyan-400 mb-4">
             Quick Links
@@ -64,7 +62,7 @@ function Footer() {
           </div>
         </div>
 
-        {/* RIGHT */}
+    }
         <div>
           <h3 className="text-lg font-semibold text-cyan-400 mb-4">
             Stay Updated
@@ -106,7 +104,7 @@ function Footer() {
         </p>
       </div>
 
-      {/* 🔥 ANIMATION */}
+   
       <style>{`
         @keyframes topBeam {
           0% { transform: translateX(-100%); opacity: 0; }
