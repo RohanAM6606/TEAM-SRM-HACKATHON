@@ -146,7 +146,7 @@ const Navbar = () => {
                   transition-all duration-300 transform
                   ${
                     activeSection === item.id
-                      ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/30"
+                      ? "bg-gradient-to-r from-blue-500 to-cyan-950 text-white shadow-lg shadow-blue-500/30"
                       : "text-gray-300 hover:text-white hover:bg-white/10"
                   }
                 `}

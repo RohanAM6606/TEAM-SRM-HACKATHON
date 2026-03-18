@@ -1,6 +1,7 @@
 import Navbar from "../components/common/Navbar";
 import HeroSection from "../components/hero/HeroSection";
 import About from "../components/about/About";
+import Domains from "../components/Domains/Domains";
 import Events from "../components/Events/Events";
 import Teams from "../components/Teams/Teams";
 
@@ -15,6 +16,9 @@ const Home = () => {
 
       <div data-section="about">
         <About />
+      </div>
+      <div data-section="domains">
+        <Domains />
       </div>
 
       <div data-section="events">
