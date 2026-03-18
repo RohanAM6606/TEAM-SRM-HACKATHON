@@ -2,30 +2,29 @@ const About = () => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black">
 
-      {/* 🌌 RADIAL GLOW BACKGROUND */}
+   
       <div className="absolute inset-0 
         bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.25),transparent_40%),
              radial-gradient(circle_at_70%_60%,rgba(34,211,238,0.2),transparent_40%)]">
       </div>
 
-      {/* ✨ OPTIONAL NOISE TEXTURE (remove if not using image) */}
+
       <div className="absolute inset-0 opacity-[0.04] bg-[url('/noise.png')]"></div>
 
       <div className="relative z-10 px-6 md:px-12 lg:px-20 py-24">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
-          {/* LEFT SIDE */}
+         
           <div className="space-y-8">
 
-            {/* 🔥 ABOUT US HEADING */}
             <div className="mb-6">
               <h2 className="text-3xl md:text-4xl font-semibold text-blue-400 relative inline-block tracking-wide">
                 About Us
 
-                {/* underline */}
+                
                 <span className="block h-[2px] w-full bg-gradient-to-r from-blue-400 to-cyan-300 mt-2"></span>
 
-                {/* glow */}
+             
                 <span className="absolute left-0 top-0 w-full h-full text-blue-400 blur-md opacity-40 pointer-events-none">
                   About Us
                 </span>
