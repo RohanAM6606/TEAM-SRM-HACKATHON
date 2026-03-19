@@ -37,9 +37,9 @@ const Contact = () => {
             </p>
 
             <div className="space-y-3 text-gray-300 text-sm md:text-base">
-              <p>📍 SRM Institute of Science and Technology</p>
-              <p>📧 teamsrmhackathon@gmail.com</p>
-              <p>📢 Follow us on Instagram & LinkedIn for updates</p>
+              <p> SRM Institute of Science and Technology</p>
+              <p> teamsrmhackathon@gmail.com</p>
+              <p> Follow us on Instagram & LinkedIn for updates</p>
             </div>
 
           </div>
