@@ -1,42 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
-export default function GridBackground() {
+const GridBackground = () => {
   const canvasRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const GRID_SIZE = isMobile ? 45 : 50;
-    const ACTIVATION_RADIUS = isMobile ? 100 : 80;
-    const PULL_STRENGTH = isMobile ? 0.05 : 0.1;
+    // Resize canvas
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const GRID_SIZE = 55;
+    const DOT_RADIUS = 5;
+    const CROSS_SIZE = 50;
+    const ACTIVATION_RADIUS = 100;
+    const PULL_STRENGTH = 0.2;
 
     let mouse = { x: -9999, y: -9999 };
 
-    const handlePointerMove = (e) => {
-      if (!isMobile) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      }
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     };
 
-    const handlePointerEnd = () => {
+    const handleMouseLeave = () => {
       mouse.x = -9999;
       mouse.y = -9999;
     };
 
-    if (!isMobile) {
-      window.addEventListener("mousemove", handlePointerMove);
-      window.addEventListener("mouseleave", handlePointerEnd);
-    }
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", handleMouseLeave);
 
     class Node {
       constructor(x, y) {
@@ -44,7 +42,7 @@ export default function GridBackground() {
         this.baseY = y;
         this.x = x;
         this.y = y;
-        this.glowIntensity = 0;
+        this.active = false;
       }
 
       update() {
@@ -52,193 +50,121 @@ export default function GridBackground() {
         const dy = mouse.y - this.baseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < ACTIVATION_RADIUS) {
-          const pull = 1 - dist / ACTIVATION_RADIUS;
-          this.x = this.baseX + dx * pull * PULL_STRENGTH;
-          this.y = this.baseY + dy * pull * PULL_STRENGTH;
-          this.glowIntensity = Math.min(1, this.glowIntensity + 0.15);
+        this.active = dist < ACTIVATION_RADIUS;
+
+        if (this.active) {
+          const pullX = dx * PULL_STRENGTH;
+          const pullY = dy * PULL_STRENGTH;
+
+          this.x = this.baseX + Math.max(-10, Math.min(10, pullX));
+          this.y = this.baseY + Math.max(-10, Math.min(10, pullY));
         } else {
-          this.x += (this.baseX - this.x) * 0.15;
-          this.y += (this.baseY - this.y) * 0.15;
-          this.glowIntensity = Math.max(0, this.glowIntensity - 0.08);
+          this.x += (this.baseX - this.x) * 0.1;
+          this.y += (this.baseY - this.y) * 0.1;
         }
       }
 
       draw() {
-        if (isMobile && this.glowIntensity === 0) {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(59,130,246,0.35)";
-          ctx.fill();
-          return;
-        }
+        ctx.strokeStyle = "rgba(73,140,235,0.4)";
+        ctx.lineWidth = 1.2;
 
+        // "+"
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle =
-          this.glowIntensity > 0
-            ? `rgba(59,130,246,${0.5 + this.glowIntensity * 0.3})`
-            : "rgba(96,165,250,0.4)";
+        ctx.moveTo(this.x - CROSS_SIZE / 2, this.y);
+        ctx.lineTo(this.x + CROSS_SIZE / 2, this.y);
+        ctx.moveTo(this.x, this.y - CROSS_SIZE / 2);
+        ctx.lineTo(this.x, this.y + CROSS_SIZE / 2);
+        ctx.stroke();
+
+        // dot
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, DOT_RADIUS, 0, Math.PI * 2);
+        ctx.fillStyle = this.active
+          ? "rgba(83,180,255,1)"
+          : "lightblue";
         ctx.fill();
-
-        if (this.glowIntensity > 0) {
-          const glowSize = isMobile
-            ? 15 * this.glowIntensity
-            : 20 * this.glowIntensity;
-
-          const gradient = ctx.createRadialGradient(
-            this.x,
-            this.y,
-            0,
-            this.x,
-            this.y,
-            glowSize
-          );
-
-          gradient.addColorStop(
-            0,
-            `rgba(59,130,246,${this.glowIntensity * 0.3})`
-          );
-          gradient.addColorStop(
-            0.5,
-            `rgba(37,99,235,${this.glowIntensity * 0.15})`
-          );
-          gradient.addColorStop(1, "rgba(59,130,246,0)");
-
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, glowSize, 0, Math.PI * 2);
-          ctx.fill();
-        }
       }
     }
-
     let nodes = [];
-    let cols = 0;
-    let rows = 0;
 
     const buildGrid = () => {
       nodes = [];
-      cols = Math.floor(canvas.width / GRID_SIZE);
-      rows = Math.floor(canvas.height / GRID_SIZE);
-
-      for (let row = 0; row <= rows; row++) {
-        for (let col = 0; col <= cols; col++) {
-          const x = col * GRID_SIZE;
-          const y = row * GRID_SIZE;
+      for (let y = GRID_SIZE; y < canvas.height; y += GRID_SIZE) {
+        for (let x = GRID_SIZE; x < canvas.width; x += GRID_SIZE) {
           nodes.push(new Node(x, y));
         }
       }
     };
 
-    const drawLines = () => {
-      for (let row = 0; row <= rows; row++) {
-        for (let col = 0; col <= cols; col++) {
-          const index = row * (cols + 1) + col;
-          const node = nodes[index];
-          if (!node) continue;
-
-          if (col < cols) {
-            const rightNode = nodes[index + 1];
-            const glowFactor = Math.max(
-              node.glowIntensity,
-              rightNode.glowIntensity
-            );
-
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(rightNode.x, rightNode.y);
-            ctx.strokeStyle =
-              glowFactor > 0
-                ? `rgba(59,130,246,${0.2 + glowFactor * 0.6})`
-                : "rgba(96,165,250,0.15)";
-            ctx.lineWidth = glowFactor > 0 ? 1.5 : 0.5;
-            ctx.stroke();
-          }
-
-          if (row < rows) {
-            const bottomNode = nodes[index + cols + 1];
-            const glowFactor = Math.max(
-              node.glowIntensity,
-              bottomNode.glowIntensity
-            );
-
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(bottomNode.x, bottomNode.y);
-            ctx.strokeStyle =
-              glowFactor > 0
-                ? `rgba(59,130,246,${0.2 + glowFactor * 0.6})`
-                : "rgba(96,165,250,0.15)";
-            ctx.lineWidth = glowFactor > 0 ? 1.5 : 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-    };
-
-    const resize = () => {
-      const parent = canvas.parentElement;
-
-      if (parent) {
-        canvas.width = Math.max(
-          parent.offsetWidth,
-          parent.scrollWidth,
-          window.innerWidth
-        );
-        canvas.height = Math.max(parent.offsetHeight, parent.scrollHeight);
-      } else {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      buildGrid();
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    let resizeObserver;
-    if (canvas.parentElement) {
-      resizeObserver = new ResizeObserver(() => {
-        resize();
-      });
-      resizeObserver.observe(canvas.parentElement);
-    }
+    buildGrid();
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawLines();
+      const cols = Math.floor(canvas.width / GRID_SIZE);
 
-      nodes.forEach((n) => {
-        n.update();
-        n.draw();
-      });
+      nodes.forEach((n) => n.update());
+
+      ctx.strokeStyle = "rgba(73,140,235,0.4)";
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        const col = i % cols;
+
+        if (!node.active) continue;
+
+        // right neighbor
+        if (col < cols - 1) {
+          const right = nodes[i + 1];
+          if (right.active) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(right.x, right.y);
+            ctx.stroke();
+          }
+        }
+
+        // bottom neighbor
+        const bottomIndex = i + cols;
+        if (bottomIndex < nodes.length) {
+          const bottom = nodes[bottomIndex];
+          if (bottom.active) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(bottom.x, bottom.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      nodes.forEach((n) => n.draw());
 
       requestAnimationFrame(animate);
     };
 
     animate();
 
+    // Cleanup
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("resize", checkMobile);
-
-      if (resizeObserver) resizeObserver.disconnect();
-
-      if (!isMobile) {
-        window.removeEventListener("mousemove", handlePointerMove);
-        window.removeEventListener("mouseleave", handlePointerEnd);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isMobile]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none"
-      style={{ pointerEvents: "auto" }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: -1,
+        background: "#050816",
+      }}
     />
   );
-}
+};
+
+export default GridBackground;
